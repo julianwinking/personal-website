@@ -1,0 +1,3 @@
+[submodule "projects/pid-demo"]
+	path = projects/pid-demo
+	url = https://github.com/julianwinking/pid-demo.git
