@@ -58,6 +58,7 @@ body {
 
 #projects {
     margin-top: 120px;
+    margin-bottom: 120px;
 }
 
 #projects h2 {
@@ -120,4 +121,10 @@ body {
         width: 100%; /* Full width on mobile */
         margin: 0 0 1.5rem; /* Remove horizontal centering */
     }
+}
+
+.profile-image-container img {
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 2px solid #ddd;
 }
