@@ -7,6 +7,7 @@
     <meta name="author" content="Julian Winking">
     <title>Julian Winking</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="js/projects-slider.js" defer></script>
     <!-- <link rel="icon" href="/img/favicon.ico" type="image/x-icon"> -->
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Julian Winking">
@@ -34,26 +35,59 @@
         </a>
     </div>
 
-    <!-- <section id="projects">
+    <section id="projects">
         <h2>Projects</h2>
-        <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
-            <div class="project-container">
-                <h3>PID Controller Demo</h3>
-                <p>A browser-based tool for experimenting with PID control, featuring real-time parameter tuning and visual feedback.</p>
+        <div class="projects-slider">
+            <div class="projects-container">
+                <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>PID Controller Demo</h3>
+                        <p>A browser-based tool for experimenting with PID control, featuring real-time parameter tuning and visual feedback.</p>
+                        <div class="project-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">Control Systems</span>
+                            <span class="tag">Interactive</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://data-science-club.de/gym-tracker/" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>GymTracker</h3>
+                        <p>A predictive web app that forecasts university gym occupancy using real-time data and time-series analysis.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Data Analysis</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>RWTH Notenstreicher</h3>
+                        <p>Analyze RWTH transcripts to determine the optimal module exclusion.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Streamlit</span>
+                            <span class="tag">Data Analysis</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>Banner Injector Extension</h3>
+                        <p>A lightweight Chrome extension enabling users to inject dynamic, customizable HTML banners into web pages.</p>
+                        <div class="project-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">Chrome Extension</span>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="https://data-science-club.de/gym-tracker/" target="_blank" class="project-link">
-            <div class="project-container">
-                <h3>GymTracker</h3>
-                <p>A predictive web app that forecasts university gym occupancy using real-time data and time-series analysis.</p>
-            </div>
-        </a>
-        <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank" class="project-link">
-            <div class="project-container">
-                <h3>Banner Injector Extension</h3>
-                <p>A lightweight Chrome extension enabling users to inject dynamic, customizable HTML banners into web pages.</p>
-            </div>
-        </a>
-    </section> -->
+        </div>
+        <div class="slider-navigation">
+            <button class="nav-arrow nav-arrow-left" id="prevBtn">‹</button>
+            <button class="nav-arrow nav-arrow-right" id="nextBtn">›</button>
+        </div>
+    </section>
 </body>
 </html>
