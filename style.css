@@ -13,20 +13,24 @@ html {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.1;
     color: #333;
-    padding: 13vh 10vw 0 10vw;
+    padding: 18vh 15vw 0 15vw;
     margin: 0;
     box-sizing: border-box;
-    min-height: 100vh; /* Ensure body takes full height */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    position: relative;
+    z-index: 0;
+}
+.page-wrap {
+    position: relative;
+    z-index: 1;
 }
 
 .social-icons {
     display: flex;
-    align-items: flex-start; /* Correct alignment direction */
-    margin-top: 1.5rem;
+    align-items: flex-start;
+    margin-top: 1.6rem;
 }
 
 .social-icon {
@@ -37,21 +41,20 @@ body {
     width: 40px;
     height: auto;
     margin-right: 2rem;
-    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+    transition: transform 0.3s ease-in-out;
     fill: #333;
     padding: 8px;
     background: #ffffff00;
 }
 
 .social-icon img:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
     background: #e2e1e1;
     border-radius: 5px;
 }
 
 #projects {
-    margin-top: 80px;
-    margin-bottom: 120px;
+    margin-top: 200px;
+    margin-bottom: 450px;
 }
 
 #projects h2 {
@@ -59,51 +62,52 @@ body {
     color: #333;
 }
 
-.projects-slider {
-    position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    padding-top: 10px;
+/* Two-column layout */
+.projects-grid {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
 }
 
-.projects-container {
+.projects-list {
     display: flex;
-    gap: 20px;
-    transition: transform 0.3s ease;
-    width: max-content;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    align-items: stretch; /* Make all items same height */
-    padding: 10px 0;
-    box-sizing: border-box; /* Ensure proper box sizing */
-}
-
-.projects-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    flex-direction: column;
+    gap: 50px;
 }
 
 .project-container {
     background: #fff;
     border: 2px solid #ddd;
     border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 350px;
-    flex-shrink: 0;
+    padding: 2.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.3s ease, min-height 0.35s ease, padding 0.35s ease;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 250px; /* Set consistent height for all boxes */
+    min-height: 220px;
     box-sizing: border-box;
     margin: 0;
 }
 
-.project-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Active/dim states handled by JS adding .active to the link */
+.project-link { display: block; text-decoration: none; }
+.project-link .project-container { opacity: 0.6; }
+.project-link.active .project-container {
+    transform: scale(1.02);
+    box-shadow: 0 6px 18px rgba(0, 115, 230, 0.2);
+    opacity: 1;
+    border-color: #c7def7;
+    min-height: 320px;
+}
+
+/* Make unfocused project boxes shorter */
+.project-link:not(.active) .project-container {
+    min-height: 70px;
+    padding-top: 2rem;
+    padding-bottom: 1.6rem;
 }
 
 .project-container h3 {
@@ -117,14 +121,16 @@ body {
     color: #555;
     margin-bottom: 1rem;
     line-height: 1.4;
-    flex-grow: 1; /* Allow description to fill available space */
+    flex-grow: 1;
+    transition: opacity 400ms ease, max-height 250ms ease, margin 250ms ease;
 }
 
 .project-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: auto; /* Push tags to bottom */
+    margin-top: auto;
+    transition: opacity 200ms ease, max-height 250ms ease, margin 250ms ease;
 }
 
 .tag {
@@ -132,15 +138,10 @@ body {
     border: 1px solid #0073e6;
     color: #0073e6;
     padding: 0.25rem 0.5rem;
-    border-radius: 12px;
+    border-radius: 5px;
     font-size: 0.8rem;
     font-weight: 500;
     transition: all 0.2s ease;
-}
-
-.tag:hover {
-    background: #0073e6;
-    color: white;
 }
 
 .project-container a {
@@ -153,53 +154,20 @@ body {
     text-decoration: underline;
 }
 
-.project-link {
-    text-decoration: none;
-    display: block;
+/* Disable hover-lift; focus is on active state via scroll */
+.project-link:hover .project-container { transform: none; }
+
+/* Hide description and tags for unfocused projects */
+.project-link:not(.active) .project-container p,
+.project-link:not(.active) .project-container .project-tags {
+    opacity: 0;
+    max-height: 0;
+    margin: 0 !important;
+    overflow: hidden;
+    pointer-events: none;
 }
 
-.project-link:hover .project-container {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.slider-navigation {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.nav-arrow {
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-arrow:hover:not(:disabled) {
-    background: #f0f0f0;
-    transform: scale(1.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nav-arrow:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.nav-arrow:active:not(:disabled) {
-    transform: scale(0.9);
-}
+/* Remove old slider navigation styles (no longer used) */
 
 .profile-image-container img {
     border-radius: 8px;
@@ -207,38 +175,85 @@ body {
     border: 2px solid #ddd;
 }
 
+/* Preview panel */
+.project-preview {
+    position: sticky;
+    top: 12vh;
+    align-self: start;
+    min-height: 260px;
+    height: fit-content;
+    overflow: hidden;
+    transition: height 250ms ease; /* animate height to match active row */
+}
+
+.preview-content {
+    position: relative;
+    width: 100%;
+    min-height: 260px;
+}
+
+.preview-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 250ms ease;
+}
+
+.preview-layer img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.preview-layer.active { opacity: 1; }
+
+/* Canvas preview styling */
+.preview-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed right-side preview background */
+.fixed-preview {
+    position: fixed;
+    z-index: 0; /* under .page-wrap but above body background */
+    top: 0;
+    right: 0;
+    width: 55vw;
+    min-width: 420px;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.fixed-preview canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 1;
+    transition: none !important;
+}
+
 /* Mobile Media Query - Must be at the bottom to override desktop styles */
 @media (max-width: 768px) {
     body {
         padding: 10vh 10vw;
         font-size: 20px;
-        overflow-x: hidden; /* Ensure no horizontal scroll on mobile */
+        overflow-x: hidden;
     }
 
     .social-icon img {
         margin-bottom: 1rem;
         margin-right: 1rem;
     }
-    
-    .projects-slider {
-        overflow: visible; /* Remove horizontal scrolling on mobile */
-        padding-top: 15px; /* Remove horizontal padding, keep vertical */
-    }
-    
-    .projects-container {
-        flex-direction: column; /* Stack projects vertically */
-        width: 100%; /* Take full width */
-        gap: 1.5rem; /* Increase gap between projects */
-        overflow: visible; /* Remove horizontal scrolling */
-        transform: none !important; /* Disable transform animations on mobile */
-    }
-    
-    .project-container {
-        width: 100%; /* Full width on mobile */
-        min-height: auto; /* Remove fixed height on mobile */
-    }
-    
-    .slider-navigation {
-        display: none !important; /* Hide navigation arrows on mobile */
-    }
+
+    .projects-grid { display: block; }
+    .project-preview { position: static; margin-top: 20px; }
+    .fixed-preview { display: none; }
+    .project-link .project-container { opacity: 1; }
+    .project-link.active .project-container { transform: none; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
 }

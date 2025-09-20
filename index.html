@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Julian Winking - Mechanical Engineering and Business Administration Student at RWTH Aachen.">
+    <meta name="description" content="Curious about robotics, controls & machine learning @ ETH Zurich">
     <meta name="author" content="Julian Winking">
     <title>Julian Winking</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="js/projects-slider.js" defer></script>
+    <script src="js/flow-field.js" defer></script>
     <!-- <link rel="icon" href="/img/favicon.ico" type="image/x-icon"> -->
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Julian Winking">
-    <meta property="og:description" content="Mechanical Engineering and Business Administration Student at RWTH Aachen.">
+    <meta property="og:description" content="Curious about robotics, controls & machine learning @ ETH Zurich">
     <!-- <meta property="og:image" content="/img/og-image.png"> -->
     <meta property="og:url" content="https://winki.ng">
     <meta name="google-site-verification" content="r4L5ei0KsHV4PoFb9oY_DLmH90znvNonHw5Sadn2KfM" />
 </head>
 <body>
+    <!-- Fixed right-side preview background -->
+    <div class="fixed-preview" aria-hidden="true"></div>
+    <div class="page-wrap">
     <div class="profile-image-container">
         <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking" class="profile-image">
     </div>
     <h1>Julian Winking</h1>
-    <p>Mechanical Engineering and Business Administration Student at RWTH Aachen</p>
+    <p>Curious about robotics, controls & machine learning @ ETH Zurich</p>
 
     <div class="social-icons">
         <a href="https://www.linkedin.com/in/julian-winking/" target="_blank" class="social-icon" aria-label="LinkedIn Profile">
@@ -37,8 +40,18 @@
 
     <section id="projects">
         <h2>Projects</h2>
-        <div class="projects-slider">
-            <div class="projects-container">
+        <div class="projects-grid">
+            <div class="projects-list">
+                <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>Bachelor Thesis</h3>
+                        <p>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise Injection.</p>
+                        <div class="project-tags">
+                            <span class="tag">Probabilistic AI</span>
+                            <span class="tag">Machine Learning</span>
+                        </div>
+                    </div>
+                </a>
                 <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
                     <div class="project-container">
                         <h3>PID Controller Demo</h3>
@@ -61,17 +74,6 @@
                         </div>
                     </div>
                 </a>
-                <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>RWTH Notenstreicher</h3>
-                        <p>Analyze RWTH transcripts to determine the optimal module exclusion.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Streamlit</span>
-                            <span class="tag">Data Analysis</span>
-                        </div>
-                    </div>
-                </a>
                 <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank" class="project-link">
                     <div class="project-container">
                         <h3>Banner Injector Extension</h3>
@@ -82,12 +84,23 @@
                         </div>
                     </div>
                 </a>
+                <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="project-link">
+                    <div class="project-container">
+                        <h3>RWTH Notenstreicher</h3>
+                        <p>Analyze RWTH transcripts to determine the optimal module exclusion.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Streamlit</span>
+                            <span class="tag">Live App</span>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="slider-navigation">
-            <button class="nav-arrow nav-arrow-left" id="prevBtn">‹</button>
-            <button class="nav-arrow nav-arrow-right" id="nextBtn">›</button>
+            <aside class="project-preview" aria-label="Project visualization preview">
+                <div class="preview-content" aria-live="polite"></div>
+            </aside>
         </div>
     </section>
+    </div>
 </body>
 </html>
