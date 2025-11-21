@@ -19,7 +19,11 @@
 
   const patterns = {
     idle: (x, y, t, W, H) => 0.5 * Math.sin(0.01 * (x + y) + t * 0.8),
-    'Bachelor Thesis': (x, y, t, W, H) => {
+  };
+
+  const projectAnimations = [
+    // Animation 1
+    (x, y, t, W, H) => {
       const u = x / W, v = y / H;
       const C = [ { cx: 0.28, cy: 0.35 }, { cx: 0.62, cy: 0.55 }, { cx: 0.45, cy: 0.20 } ];
       let vx = 0, vy = 0;
@@ -47,41 +51,46 @@
       const delta = amp * n;
       return base + delta;
     },
-    'PID Controller Demo': (x, y, t, W, H) => {
-  // Base sinusoidal curve with x-edge falloff
-  const A = H * 0.18;
-  const k = (2 * Math.PI) / (W * 0.9);
-  const cx = W * 0.5;
-  const sW = W * 0.7;
-  const phi = x * k - t * 1.2;
-  const E = Math.exp(-Math.pow((x - cx) / sW, 2));
-  const y0 = H * 0.5 + A * Math.sin(phi) * E;
-
-  // Tangent direction of the sine curve (single clear wave)
-  const dEdx = E * (-2 * (x - cx) / (sW * sW));
-  const dy0dx = A * (Math.cos(phi) * k * E + Math.sin(phi) * dEdx);
-  const aTan = Math.atan2(dy0dx, 1);
-
-  // Narrower band around the wave; others point straight down
-  const sigma = H * 0.12; // thickness of the band
-  const dy = y - y0;
-  const w = Math.exp(-(dy * dy) / (2 * sigma * sigma)); // 0..1
-  // Smoothstep to limit influence to a tight band (avoid second-wave look)
-  const edge0 = 0.25, edge1 = 0.75; // acts on w
-  const tNorm = Math.max(0, Math.min(1, (w - edge0) / (edge1 - edge0)));
-  const s = tNorm * tNorm * (3 - 2 * tNorm); // smoothstep
-
-  const aDown = Math.PI / 2; // vertical downward
-  return lerpAngle(aDown, aTan, s);
+    // Animation 2
+    (x, y, t, W, H) => {
+      const A = H * 0.18;
+      const k = (2 * Math.PI) / (W * 0.9);
+      const cx = W * 0.5;
+      const sW = W * 0.7;
+      const phi = x * k - t * 1.2;
+      const E = Math.exp(-Math.pow((x - cx) / sW, 2));
+      const y0 = H * 0.5 + A * Math.sin(phi) * E;
+      const dEdx = E * (-2 * (x - cx) / (sW * sW));
+      const dy0dx = A * (Math.cos(phi) * k * E + Math.sin(phi) * dEdx);
+      const aTan = Math.atan2(dy0dx, 1);
+      const sigma = H * 0.12;
+      const dy = y - y0;
+      const w = Math.exp(-(dy * dy) / (2 * sigma * sigma));
+      const edge0 = 0.25, edge1 = 0.75;
+      const tNorm = Math.max(0, Math.min(1, (w - edge0) / (edge1 - edge0)));
+      const s = tNorm * tNorm * (3 - 2 * tNorm);
+      const aDown = Math.PI / 2;
+      return lerpAngle(aDown, aTan, s);
     },
-    'GymTracker': (x, y, t, W, H) => Math.PI / 2 + 0.6 * Math.sin(x * 0.04 + t * 1.5),
-    'Banner Injector Extension': (x, y, t, W, H) => 0 + 0.6 * Math.sin(y * 0.05 - t * 1.2),
-    'RWTH Notenstreicher': (x, y, t, W, H) => {
+    // Animation 3
+    (x, y, t, W, H) => Math.PI / 2 + 0.6 * Math.sin(x * 0.04 + t * 1.5),
+    // Animation 4
+    (x, y, t, W, H) => 0 + 0.6 * Math.sin(y * 0.05 - t * 1.2),
+    // Animation 5
+    (x, y, t, W, H) => {
       const cx = W * 0.35, cy = H * 0.45;
       const ang = Math.atan2(y - cy, x - cx); const r = Math.hypot(x - cx, y - cy);
       return ang + 0.5 * Math.sin(r * 0.05 - t * 1.1);
     },
-  };
+  ];
+
+  function getPatternFn(key) {
+    if (key === 'idle') return patterns.idle;
+    if (typeof key === 'number') {
+      return projectAnimations[key % projectAnimations.length];
+    }
+    return patterns.idle;
+  }
 
   function lerpAngle(a, b, p) {
     let diff = b - a;
@@ -150,8 +159,8 @@
   const aPrev = new Float32Array(count);
   const lenPrev = new Float32Array(count);
 
-    const prevFn = patterns[prevName] || patterns.idle;
-  const nextFn = patterns[nextName] || patterns.idle;
+    const prevFn = getPatternFn(prevName);
+    const nextFn = getPatternFn(nextName);
     const t0 = state.t; // snapshot time to avoid time-evolving sources during morph
     let idx = 0;
     for (let jy = 0; jy < rows; jy++) {
@@ -181,9 +190,9 @@
     ctx.clearRect(0, 0, W, H);
     const spacing = state.spacing;
     const baseLen = state.lineLength;
-    const prevFn = patterns[state.prevPattern] || patterns.idle;
-    const currFn = patterns[state.currentPattern] || patterns.idle;
-    const nextFn = patterns[state.targetPattern] || patterns.idle;
+    const prevFn = getPatternFn(state.prevPattern);
+    const currFn = getPatternFn(state.currentPattern);
+    const nextFn = getPatternFn(state.targetPattern);
 
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -199,7 +208,7 @@
         let length;
         if (usingCache) {
           const lp = state.cache.lenPrev[idx];
-          const lnLive = 0.9 + 1.3 * m; // live next length factor
+          const lnLive = 0.9 + 1.3 * m;
           const lf = lp + (lnLive - lp) * pTrans;
           length = baseLen * lf;
         } else {
@@ -215,7 +224,7 @@
         // Single straight segment anchored at (x,y)
         let theta;
         if (usingCache) {
-          const a1Live = nextFn(x, y, state.t, W, H); // live next
+          const a1Live = nextFn(x, y, state.t, W, H);
           theta = lerpAngle(state.cache.aPrev[idx], a1Live, pTrans);
         } else if (state.transitioning) {
           // Fallback: compute live if cache missing
@@ -241,14 +250,14 @@
     state.trans = 1;
     state.transitioning = false;
     state.currentPattern = state.targetPattern;
-    state.cache = null; // done with cached data
+    state.cache = null;
       }
     }
     requestAnimationFrame(draw);
   }
 
-  function startTransitionTo(title) {
-    const name = patterns[title] ? title : 'idle';
+  function startTransitionTo(index) {
+    const name = index;
     if (name === state.currentPattern && !state.transitioning) {
       state.targetPattern = name; state.prevPattern = name; state.trans = 1; state.transitioning = false; return;
     }
@@ -274,7 +283,7 @@
   window.FlowFieldPreview = {
     init,
     resize: resizeCanvas,
-    setPattern: (title) => { startTransitionTo(title); resizeCanvas(); },
+    setPattern: (index) => { startTransitionTo(index); resizeCanvas(); },
     setIdle: () => { startTransitionTo('idle'); resizeCanvas(); },
   };
 })();

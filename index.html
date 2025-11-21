@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,91 +18,163 @@
     <meta property="og:url" content="https://winki.ng">
     <meta name="google-site-verification" content="r4L5ei0KsHV4PoFb9oY_DLmH90znvNonHw5Sadn2KfM" />
 </head>
+
 <body>
     <!-- Fixed right-side preview background -->
     <div class="fixed-preview" aria-hidden="true"></div>
     <div class="page-wrap">
-    <div class="profile-image-container">
-        <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking" class="profile-image">
-    </div>
-    <h1>Julian Winking</h1>
-    <p>Curious about robotics, controls & machine learning <br>@ ETH Zurich</p>
-
-    <div class="social-icons">
-        <a href="https://www.linkedin.com/in/julian-winking/" target="_blank" class="social-icon" aria-label="LinkedIn Profile">
-            <img src="./img/linkedin.svg" alt="LinkedIn">
-        </a>
-        <a href="https://github.com/julianwinking" target="_blank" class="social-icon" aria-label="GitHub Profile">
-            <img src="./img/github.svg" alt="GitHub">
-        </a>
-        <a href="mailto:julian.winking@gmail.com" class="social-icon" aria-label="Send an Email">
-            <img src="./img/mail.svg" alt="E-Mail">
-        </a>
-    </div>
-
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="projects-grid">
-            <div class="projects-list">
-                <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>Bachelor Thesis</h3>
-                        <p>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise Injection.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Probabilistic AI</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>PID Controller Demo</h3>
-                        <p>A browser-based tool for experimenting with PID control, featuring real-time parameter tuning and visual feedback.</p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Control Systems</span>
-                            <span class="tag">Interactive</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://data-science-club.de/gym-tracker/" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>GymTracker</h3>
-                        <p>A predictive web app that forecasts university gym occupancy using real-time data and time-series analysis.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Data Analysis</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>Banner Injector Extension</h3>
-                        <p>A lightweight Chrome extension enabling users to inject dynamic, customizable HTML banners into web pages.</p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Chrome Extension</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="project-link">
-                    <div class="project-container">
-                        <h3>RWTH Notenstreicher</h3>
-                        <p>Analyze RWTH transcripts to determine the optimal module exclusion.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Streamlit</span>
-                            <span class="tag">Live App</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <aside class="project-preview" aria-label="Project visualization preview">
-                <div class="preview-content" aria-live="polite"></div>
-            </aside>
+        <div class="profile-image-container">
+            <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking"
+                class="profile-image">
         </div>
-    </section>
+        <h1>Julian Winking</h1>
+        <p>Curious about robotics, controls & machine learning <br>@ ETH Zurich</p>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/julian-winking/" target="_blank" class="social-icon"
+                aria-label="LinkedIn Profile">
+                <img src="./img/linkedin.svg" alt="LinkedIn">
+            </a>
+            <a href="https://github.com/julianwinking" target="_blank" class="social-icon" aria-label="GitHub Profile">
+                <img src="./img/github.svg" alt="GitHub">
+            </a>
+            <a href="mailto:julian.winking@gmail.com" class="social-icon" aria-label="Send an Email">
+                <img src="./img/mail.svg" alt="E-Mail">
+            </a>
+        </div>
+
+        <section id="selected-projects">
+            <h2>Selected Projects</h2>
+            <div class="projects-grid">
+                <div class="projects-list">
+                    <a href="https://github.com/julianwinking/visual-odometry-pipeline" target="_blank"
+                        class="project-link">
+                        <div class="project-container">
+                            <h3>Visual Odometry Pipeline</h3>
+                            <div class="subject-badge">Computer Vision</div>
+                            <p>A visual odometry pipeline for estimating camera trajectory from image sequences.
+                                Implements feature extraction, matching, and motion estimation using OpenCV and Python
+                                to reconstruct paths from monocular video feeds.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">SLAM</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">Feature Extraction</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="https://github.com/julianwinking/satelite-docking" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <h3>Satellite Docking</h3>
+                            <div class="subject-badge">Motion Planning</div>
+                            <p>Autonomous satellite docking using Sequential Convex Programming (SCvx) for trajectory
+                                optimization. Simulates dynamic environments and enforces safety constraints to ensure
+                                precise and collision-free docking maneuvers.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">SCvx</span>
+                                <span class="tag">Trajectory Optimization</span>
+                                <span class="tag">Python</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="https://github.com/julianwinking/dpoc-flappy-bird" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <h3>Flappy Bird</h3>
+                            <div class="subject-badge">Optimal Control</div>
+                            <p>Solving the Flappy Bird game using Dynamic Programming and Optimal Control as a
+                                Stochastic Shortest Path Problem. Models the game dynamics and computes optimal policies
+                                to maximize survival time under uncertainty.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Dynamic Programming</span>
+                                <span class="tag">SSP</span>
+                                <span class="tag">Python</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <h3>Bachelor Thesis</h3>
+                            <div class="subject-badge">Probabilistic AI</div>
+                            <p>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise
+                                Injection. Utilizes Gaussian processes and gradient-based noise tuning in Python to
+                                improve optimization performance in mismatched environments.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Gaussian Processes</span>
+                                <span class="tag">Bayesian Optimization</span>
+                                <span class="tag">Python</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <h3>PID Controller Demo</h3>
+                            <div class="subject-badge">Control Systems</div>
+                            <p>A browser-based tool for experimenting with PID control, featuring real-time parameter
+                                tuning and visual feedback. Built with JavaScript, HTML, and CSS, it allows users to
+                                adjust P, I, and D gains and observe system stability instantly.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Simulation</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">PID Control</span>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <aside class="project-preview" aria-label="Project visualization preview">
+                    <div class="preview-content" aria-live="polite"></div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="other-projects">
+            <h2>Other Projects</h2>
+            <div class="projects-grid">
+                <div class="other-projects-grid">
+                    <a href="https://data-science-club.de/gym-tracker/" target="_blank" class="other-project-link">
+                        <div class="other-project-card">
+                            <h3>GymTracker</h3>
+                            <p>Predictive web app forecasting university gym occupancy using real-time data and
+                                time-series analysis.</p>
+                        </div>
+                    </a>
+                    <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank"
+                        class="other-project-link">
+                        <div class="other-project-card">
+                            <h3>Banner Injector Extension</h3>
+                            <p>Chrome extension to inject custom banners into pages using JavaScript and CSS.</p>
+                        </div>
+                    </a>
+                    <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="other-project-link">
+                        <div class="other-project-card">
+                            <h3>RWTH Notenstreicher</h3>
+                            <p>Streamlit app that analyses transcripts and suggests module exclusions to maximise GPA.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
+
 </html>

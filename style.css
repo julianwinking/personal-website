@@ -1,5 +1,7 @@
 /* Universal box-sizing */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -22,6 +24,7 @@ body {
     position: relative;
     z-index: 0;
 }
+
 .page-wrap {
     position: relative;
     z-index: 1;
@@ -52,14 +55,62 @@ body {
     border-radius: 5px;
 }
 
-#projects {
+#selected-projects {
     margin-top: 200px;
-    margin-bottom: 450px;
+    margin-bottom: 100px;
 }
 
-#projects h2 {
+#selected-projects h2 {
     font-size: 26px;
     color: #333;
+}
+
+#other-projects {
+    margin-bottom: 250px;
+}
+
+#other-projects h2 {
+    font-size: 22px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.other-projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.other-project-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.other-project-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.other-project-link:hover .other-project-card {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-color: #bbb;
+}
+
+.other-project-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 16px;
+    color: #555;
+}
+
+.other-project-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
 }
 
 /* Two-column layout */
@@ -90,11 +141,19 @@ body {
     min-height: 220px;
     box-sizing: border-box;
     margin: 0;
+    position: relative;
 }
 
 /* Active/dim states handled by JS adding .active to the link */
-.project-link { display: block; text-decoration: none; }
-.project-link .project-container { opacity: 1; }
+.project-link {
+    display: block;
+    text-decoration: none;
+}
+
+.project-link .project-container {
+    opacity: 1;
+}
+
 .project-link.active .project-container {
     transform: scale(1.02);
     box-shadow: 0 6px 18px rgba(0, 115, 230, 0.2);
@@ -103,7 +162,6 @@ body {
     min-height: 320px;
 }
 
-/* Make unfocused project boxes shorter */
 .project-link:not(.active) .project-container {
     min-height: 70px;
     padding-top: 2rem;
@@ -114,9 +172,10 @@ body {
     margin: 0 0 0.5rem;
     font-size: 20px;
     color: #0073e6;
+    padding-right: 150px;
+    /* Prevent overlap with badge */
 }
 
-/* Dim title text for unfocused projects (keep container fully opaque) */
 .project-link:not(.active) .project-container h3 {
     opacity: 0.65;
 }
@@ -126,7 +185,17 @@ body {
     color: #555;
     margin-bottom: 1rem;
     line-height: 1.4;
-    flex-grow: 1;
+    transition: opacity 400ms ease, max-height 250ms ease, margin 250ms ease;
+}
+
+.project-link-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #0073e6;
+    font-weight: 600;
     transition: opacity 400ms ease, max-height 250ms ease, margin 250ms ease;
 }
 
@@ -149,6 +218,26 @@ body {
     transition: all 0.2s ease;
 }
 
+.subject-badge {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    background-color: #f4f6f8;
+    color: #666;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: top 0.35s ease;
+    border: 1px solid #e1e4e8;
+}
+
+.project-link:not(.active) .subject-badge {
+    top: 2rem;
+}
+
 .project-container a {
     text-decoration: none;
     color: #0073e6;
@@ -159,11 +248,12 @@ body {
     text-decoration: underline;
 }
 
-/* Disable hover-lift; focus is on active state via scroll */
-.project-link:hover .project-container { transform: none; }
+.project-link:hover .project-container {
+    transform: none;
+}
 
-/* Hide description and tags for unfocused projects */
 .project-link:not(.active) .project-container p,
+.project-link:not(.active) .project-container .project-link-indicator,
 .project-link:not(.active) .project-container .project-tags {
     opacity: 0;
     max-height: 0;
@@ -171,8 +261,6 @@ body {
     overflow: hidden;
     pointer-events: none;
 }
-
-/* Remove old slider navigation styles (no longer used) */
 
 .profile-image-container img {
     border-radius: 8px;
@@ -188,7 +276,8 @@ body {
     min-height: 260px;
     height: fit-content;
     overflow: hidden;
-    transition: height 250ms ease; /* animate height to match active row */
+    transition: height 250ms ease;
+    /* animate height to match active row */
 }
 
 .preview-content {
@@ -213,7 +302,9 @@ body {
     height: auto;
 }
 
-.preview-layer.active { opacity: 1; }
+.preview-layer.active {
+    opacity: 1;
+}
 
 /* Canvas preview styling */
 .preview-canvas {
@@ -225,7 +316,7 @@ body {
 /* Fixed right-side preview background */
 .fixed-preview {
     position: fixed;
-    z-index: 0; /* under .page-wrap but above body background */
+    z-index: 0;
     top: 0;
     right: 0;
     width: 55vw;
@@ -243,7 +334,7 @@ body {
     transition: none !important;
 }
 
-/* Mobile Media Query - Must be at the bottom to override desktop styles */
+/* Mobile */
 @media (max-width: 768px) {
     body {
         padding: 10vh 10vw;
@@ -251,14 +342,12 @@ body {
         overflow-x: hidden;
     }
 
-    .social-icon img {
-        margin-bottom: 1rem;
-        margin-right: 1rem;
+    .project-link .project-container {
+        opacity: 1;
     }
 
-    .projects-grid { display: block; }
-    .project-preview { position: static; margin-top: 20px; }
-    .fixed-preview { display: none; }
-    .project-link .project-container { opacity: 1; }
-    .project-link.active .project-container { transform: none; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .project-link.active .project-container {
+        transform: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
 }
