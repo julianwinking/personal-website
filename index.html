@@ -21,26 +21,33 @@
 
 <body>
     <!-- Fixed right-side preview background -->
-    <div class="fixed-preview" aria-hidden="true"></div>
-    <div class="page-wrap">
-        <div class="profile-image-container">
-            <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking"
-                class="profile-image">
-        </div>
-        <h1>Julian Winking</h1>
-        <p>Curious about robotics, controls & machine learning <br>@ ETH Zurich</p>
 
-        <div class="social-icons">
-            <a href="https://www.linkedin.com/in/julian-winking/" target="_blank" class="social-icon"
-                aria-label="LinkedIn Profile">
-                <img src="./img/linkedin.svg" alt="LinkedIn">
-            </a>
-            <a href="https://github.com/julianwinking" target="_blank" class="social-icon" aria-label="GitHub Profile">
-                <img src="./img/github.svg" alt="GitHub">
-            </a>
-            <a href="mailto:julian.winking@gmail.com" class="social-icon" aria-label="Send an Email">
-                <img src="./img/mail.svg" alt="E-Mail">
-            </a>
+    <div class="page-wrap">
+        <div class="hero-banner">
+            <div class="fixed-preview" aria-hidden="true"></div>
+            <div class="profile-image-container">
+                <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking"
+                    class="profile-image">
+            </div>
+            <div class="hero-content">
+                <h1>Julian Winking</h1>
+                <p>Curious about robotics, controls & machine learning <br><span style="white-space: nowrap">@ ETH
+                        Zurich</span></p>
+
+                <div class="social-icons">
+                    <a href="https://www.linkedin.com/in/julian-winking/" target="_blank" class="social-icon"
+                        aria-label="LinkedIn Profile">
+                        <img src="./img/linkedin.svg" alt="LinkedIn">
+                    </a>
+                    <a href="https://github.com/julianwinking" target="_blank" class="social-icon"
+                        aria-label="GitHub Profile">
+                        <img src="./img/github.svg" alt="GitHub">
+                    </a>
+                    <a href="mailto:julian.winking@gmail.com" class="social-icon" aria-label="Send an Email">
+                        <img src="./img/mail.svg" alt="E-Mail">
+                    </a>
+                </div>
+            </div>
         </div>
 
         <section id="selected-projects">
@@ -50,8 +57,8 @@
                     <a href="https://github.com/julianwinking/visual-odometry-pipeline" target="_blank"
                         class="project-link">
                         <div class="project-container">
-                            <h3>Visual Odometry Pipeline</h3>
                             <div class="subject-badge">Computer Vision</div>
+                            <h3>Visual Odometry Pipeline (ongoing)</h3>
                             <p>A visual odometry pipeline for estimating camera trajectory from image sequences.
                                 Implements feature extraction, matching, and motion estimation using OpenCV and Python
                                 to reconstruct paths from monocular video feeds.</p>
@@ -61,15 +68,15 @@
                             </div>
                             <div class="project-tags">
                                 <span class="tag">SLAM</span>
-                                <span class="tag">Python</span>
+                                <span class="tag">C++</span>
                                 <span class="tag">Feature Extraction</span>
                             </div>
                         </div>
                     </a>
-                    <a href="https://github.com/julianwinking/satelite-docking" target="_blank" class="project-link">
+                    <a href="https://github.com/julianwinking/satellite-docking" target="_blank" class="project-link">
                         <div class="project-container">
-                            <h3>Satellite Docking</h3>
                             <div class="subject-badge">Motion Planning</div>
+                            <h3>Satellite Docking</h3>
                             <p>Autonomous satellite docking using Sequential Convex Programming (SCvx) for trajectory
                                 optimization. Simulates dynamic environments and enforces safety constraints to ensure
                                 precise and collision-free docking maneuvers.</p>
@@ -84,10 +91,54 @@
                             </div>
                         </div>
                     </a>
+                    <!-- <a href="https://github.com/julianwinking/fleet-orchestration" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <div class="subject-badge">Multi-Agent Systems</div>
+                            <h3>Autonomous Fleet Orchestration</h3>
+                            <p>
+                                Developed a decentralized coordination framework for multi-agent systems to execute
+                                complex retrieval tasks.
+                                Utilized Multi-Agent Path Finding (MAPF) algorithms to optimize task allocation and
+                                ensure
+                                deadlock-free trajectory planning in dynamic environments.
+                            </p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">MAPF</span>
+                                <span class="tag">Fleet Control</span>
+                                <span class="tag">Python</span>
+                            </div>
+                        </div>
+                    </a> -->
+                    <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
+                        <div class="project-container">
+                            <div class="subject-badge">Bachelor Thesis</div>
+                            <h3>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise
+                                Injection</h3>
+                            <p>Bachelor Thesis at the Institute of Data Science in Mechanical Engineering (RWTH
+                                Aachen).
+                                Addressed model mismatch in Bayesian Optimization by introducing "Targeted Noise
+                                Injection," a data-centric strategy
+                                utilizing a novel multiplicative Gaussian likelihood to selectively down-weight
+                                misleading observations.</p>
+                            <div class="project-link-indicator">
+                                <span>&rarr;</span>
+                                <span>Open Repository</span>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Gaussian Processes</span>
+                                <span class="tag">Bayesian Optimization</span>
+                                <span class="tag">Probabilistic AI</span>
+                            </div>
+                        </div>
+                    </a>
                     <a href="https://github.com/julianwinking/dpoc-flappy-bird" target="_blank" class="project-link">
                         <div class="project-container">
-                            <h3>Flappy Bird</h3>
                             <div class="subject-badge">Optimal Control</div>
+                            <h3>Flappy Bird</h3>
                             <p>Solving the Flappy Bird game using Dynamic Programming and Optimal Control as a
                                 Stochastic Shortest Path Problem. Models the game dynamics and computes optimal policies
                                 to maximize survival time under uncertainty.</p>
@@ -98,32 +149,14 @@
                             <div class="project-tags">
                                 <span class="tag">Dynamic Programming</span>
                                 <span class="tag">SSP</span>
-                                <span class="tag">Python</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
-                        <div class="project-container">
-                            <h3>Bachelor Thesis</h3>
-                            <div class="subject-badge">Probabilistic AI</div>
-                            <p>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise
-                                Injection. Utilizes Gaussian processes and gradient-based noise tuning in Python to
-                                improve optimization performance in mismatched environments.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">Gaussian Processes</span>
-                                <span class="tag">Bayesian Optimization</span>
-                                <span class="tag">Python</span>
+                                <span class="tag">Bellman Equations</span>
                             </div>
                         </div>
                     </a>
                     <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
                         <div class="project-container">
-                            <h3>PID Controller Demo</h3>
                             <div class="subject-badge">Control Systems</div>
+                            <h3>PID Controller Simulation Demo</h3>
                             <p>A browser-based tool for experimenting with PID control, featuring real-time parameter
                                 tuning and visual feedback. Built with JavaScript, HTML, and CSS, it allows users to
                                 adjust P, I, and D gains and observe system stability instantly.</p>

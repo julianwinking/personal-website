@@ -109,133 +109,162 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetCheck = () => {
       const r = link.getBoundingClientRect();
       const err = Math.abs((r.top + r.height / 2) - window.innerHeight / 2);
-      if (err < 2 || performance.now() - start > 900) { 
-        isAnimating = false; 
+      if (err < 2 || performance.now() - start > 900) {
+        isAnimating = false;
         currentThreshold = 0;
         isCoolingDown = true; setTimeout(() => { isCoolingDown = false; }, 100);
-        return; 
+        return;
       }
       requestAnimationFrame(targetCheck);
     };
     requestAnimationFrame(targetCheck);
   }
 
-  // Click: only navigate when already active; otherwise activate + scroll
-  links.forEach(link => {
-    link.addEventListener('click', (e) => {
-      if (link !== activeEl) {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  if (isMobile) {
+    // Mobile: Use IntersectionObserver for active state
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActive(entry.target);
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+    links.forEach(link => observer.observe(link));
+
+    // Simple click handler for mobile
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link !== activeEl) {
+          e.preventDefault();
+          setActive(link);
+          link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+  } else {
+    // Desktop: Custom scroll hijacking
+
+    // Click: only navigate when already active; otherwise activate + scroll
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link !== activeEl) {
+          e.preventDefault();
+          activated = true;
+          engaged = true;
+          setActive(link);
+          link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    // Wheel snapping
+    let wheelAccum = 0, wheelTimer = null;
+    let currentThreshold = 0; // Start with instant reaction
+
+    function wheelHandler(e) {
+      // Keep the session alive if scrolling happens, resetting threshold only on full stop
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => {
+        wheelAccum = 0;
+        currentThreshold = 0;
+      }, 250);
+
+      if (nearTopArea()) {
+        wheelAccum += e.deltaY;
+        if (wheelAccum > currentThreshold && !isAnimating && !isCoolingDown) {
+          e.preventDefault();
+          snapToIndex(0);
+          wheelAccum = 0;
+          currentThreshold = 100; // Sticky after switch
+        }
+        return;
+      }
+
+      if (!inProjectsViewport()) return;
+      if (isAnimating || isCoolingDown) { e.preventDefault(); return; }
+      if (!engaged) return; // allow native scroll before engagement
+
+      e.preventDefault();
+      wheelAccum += e.deltaY;
+
+      const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter();
+
+      if (wheelAccum > currentThreshold) {
+        if (idx < links.length - 1) {
+          snapToIndex(idx + 1);
+          currentThreshold = 100; // Sticky after switch
+        }
+        wheelAccum = 0;
+      } else if (wheelAccum < -currentThreshold) {
+        if (idx > 0) {
+          snapToIndex(idx - 1);
+          currentThreshold = 100; // Sticky after switch
+        } else {
+          snapToTop();
+          currentThreshold = 100;
+        }
+        wheelAccum = 0;
+      }
+    }
+    window.addEventListener('wheel', wheelHandler, { passive: false });
+
+    // Touch snapping (Desktop touch/trackpad)
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchend', (e) => {
+      const threshold = 80;
+      if (nearTopArea()) {
+        const dyTop = e.changedTouches[0].clientY - touchStartY;
+        if (dyTop < -threshold && !isAnimating) { snapToIndex(0); }
+        return;
+      }
+      if (!inProjectsViewport() || isAnimating || !engaged) return;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dy) < threshold) return;
+      const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter();
+      if (dy < 0) { if (idx < links.length - 1) snapToIndex(idx + 1); }
+      else { if (idx > 0) snapToIndex(idx - 1); else snapToTop(); }
+    }, { passive: true });
+
+    // Keyboard snapping
+    document.addEventListener('keydown', (e) => {
+      const isNavKey = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(e.key);
+      if (!isNavKey) return;
+
+      if (!inProjectsViewport() && !nearTopArea()) return;
+
+      if (isAnimating) {
         e.preventDefault();
-        activated = true;
-        engaged = true;
-        setActive(link);
-        link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      e.preventDefault();
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        if (nearTopArea()) snapToIndex(0);
+        else { const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter(); if (idx < links.length - 1) snapToIndex(idx + 1); }
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter(); if (idx > 0) snapToIndex(idx - 1); else snapToTop();
       }
     });
-  });
 
-  // Wheel snapping
-  let wheelAccum = 0, wheelTimer = null;
-  let currentThreshold = 0; // Start with instant reaction
+    // Auto engage when entering the section while scrolling down
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      if (isAnimating) { lastScrollY = window.scrollY; return; }
+      const currY = window.scrollY; const scrollingDown = currY > lastScrollY; lastScrollY = currY;
 
-  function wheelHandler(e) {
-    // Keep the session alive if scrolling happens, resetting threshold only on full stop
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { 
-      wheelAccum = 0; 
-      currentThreshold = 0; 
-    }, 250);
-
-    if (nearTopArea()) {
-      wheelAccum += e.deltaY;
-      if (wheelAccum > currentThreshold && !isAnimating && !isCoolingDown) {
-        e.preventDefault(); 
-        snapToIndex(0); 
-        wheelAccum = 0;
-        currentThreshold = 100; // Sticky after switch
+      if (!activeEl && scrollingDown && !engaged) {
+        // Snap if we are scrolling down from top OR if we reach the viewport
+        if ((nearTopArea() && currY > 10) || inProjectsViewport()) {
+          snapToIndex(0);
+        }
       }
-      return;
-    }
-
-    if (!inProjectsViewport()) return;
-    if (isAnimating || isCoolingDown) { e.preventDefault(); return; }
-    if (!engaged) return; // allow native scroll before engagement
-
-    e.preventDefault();
-    wheelAccum += e.deltaY;
-
-    const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter();
-    
-    if (wheelAccum > currentThreshold) { 
-      if (idx < links.length - 1) {
-        snapToIndex(idx + 1); 
-        currentThreshold = 100; // Sticky after switch
-      }
-      wheelAccum = 0; 
-    } else if (wheelAccum < -currentThreshold) { 
-      if (idx > 0) {
-        snapToIndex(idx - 1); 
-        currentThreshold = 100; // Sticky after switch
-      } else {
-        snapToTop();
-        currentThreshold = 100;
-      }
-      wheelAccum = 0; 
-    }
+    }, { passive: true });
   }
-  window.addEventListener('wheel', wheelHandler, { passive: false });
-
-  // Touch snapping
-  let touchStartY = 0;
-  window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
-  window.addEventListener('touchend', (e) => {
-    const threshold = 80;
-    if (nearTopArea()) {
-      const dyTop = e.changedTouches[0].clientY - touchStartY;
-      if (dyTop < -threshold && !isAnimating) { snapToIndex(0); }
-      return;
-    }
-    if (!inProjectsViewport() || isAnimating || !engaged) return;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dy) < threshold) return;
-    const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter();
-    if (dy < 0) { if (idx < links.length - 1) snapToIndex(idx + 1); }
-    else { if (idx > 0) snapToIndex(idx - 1); else snapToTop(); }
-  }, { passive: true });
-
-  // Keyboard snapping
-  document.addEventListener('keydown', (e) => {
-    const isNavKey = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(e.key);
-    if (!isNavKey) return;
-
-    if (!inProjectsViewport() && !nearTopArea()) return;
-
-    if (isAnimating) {
-      e.preventDefault();
-      return;
-    }
-
-    e.preventDefault();
-    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-      if (nearTopArea()) snapToIndex(0);
-      else { const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter(); if (idx < links.length - 1) snapToIndex(idx + 1); }
-    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-      const idx = activeEl ? getActiveIndex() : getNearestIndexToCenter(); if (idx > 0) snapToIndex(idx - 1); else snapToTop();
-    }
-  });
-
-  // Auto engage when entering the section while scrolling down
-  let lastScrollY = window.scrollY;
-  window.addEventListener('scroll', () => {
-    if (isAnimating) { lastScrollY = window.scrollY; return; }
-    const currY = window.scrollY; const scrollingDown = currY > lastScrollY; lastScrollY = currY;
-    
-    if (!activeEl && scrollingDown && !engaged) {
-      // Snap if we are scrolling down from top OR if we reach the viewport
-      if ((nearTopArea() && currY > 10) || inProjectsViewport()) {
-        snapToIndex(0);
-      }
-    }
-  }, { passive: true });
 
   // Keep preview height synced on scroll/resize when active
   window.addEventListener('scroll', () => { if (activeEl) syncPreviewHeight(activeEl); }, { passive: true });
