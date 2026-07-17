@@ -7,47 +7,70 @@
     <meta name="description" content="Curious about robotics, controls & machine learning @ ETH Zurich">
     <meta name="author" content="Julian Winking">
     <title>Julian Winking</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="js/flowfield.js" defer></script>
-    <script src="js/projects-scroll.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="style.css?v=39">
+    <script src="js/flowfield.js?v=2" defer></script>
+    <script src="js/projects-scroll.js?v=60" defer></script>
+    <script src="js/projects-data.js?v=7" defer></script>
     <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
     <link rel="canonical" href="https://winki.ng/">
     <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Julian Winking">
     <meta property="og:title" content="Julian Winking">
     <meta property="og:description" content="Curious about robotics, controls & machine learning @ ETH Zurich">
-    <!-- <meta property="og:image" content="/img/og-image.png"> -->
-    <meta property="og:url" content="https://winki.ng">
+    <meta property="og:image" content="https://winki.ng/img/profile_julian_winking.jpg">
+    <meta property="og:url" content="https://winki.ng/">
+    <meta property="og:locale" content="en_US">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Julian Winking">
+    <meta name="twitter:description" content="Curious about robotics, controls & machine learning @ ETH Zurich">
+    <meta name="twitter:image" content="https://winki.ng/img/profile_julian_winking.jpg">
     <meta name="google-site-verification" content="r4L5ei0KsHV4PoFb9oY_DLmH90znvNonHw5Sadn2KfM" />
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Julian Winking",
-        "url": "https://winki.ng",
-        "email": "julian.winking@gmail.com",
-        "sameAs": [
-            "https://www.linkedin.com/in/julian-winking/",
-            "https://github.com/julianwinking"
-        ],
-        "jobTitle": "Robotics & Machine Learning Student",
-        "affiliation": {
-            "@type": "CollegeOrUniversity",
-            "name": "ETH Zurich"
-        },
-        "knowsAbout": ["Robotics", "Machine Learning", "Computer Vision", "Optimal Control", "Bayesian Optimization", "Deep Learning", "Reinforcement Learning"]
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "https://winki.ng/#website",
+                "name": "Julian Winking",
+                "alternateName": "winki.ng",
+                "url": "https://winki.ng/",
+                "publisher": { "@id": "https://winki.ng/#person" }
+            },
+            {
+                "@type": "Person",
+                "@id": "https://winki.ng/#person",
+                "name": "Julian Winking",
+                "url": "https://winki.ng/",
+                "image": "https://winki.ng/img/profile_julian_winking.jpg",
+                "description": "Curious about robotics, controls & machine learning @ ETH Zurich",
+                "sameAs": [
+                    "https://www.linkedin.com/in/julian-winking/",
+                    "https://github.com/julianwinking"
+                ],
+                "jobTitle": "Robotics & Machine Learning Student",
+                "affiliation": {
+                    "@type": "CollegeOrUniversity",
+                    "name": "ETH Zurich"
+                },
+                "knowsAbout": ["Robotics", "Machine Learning", "Computer Vision", "Optimal Control", "Bayesian Optimization", "Deep Learning", "Reinforcement Learning"]
+            }
+        ]
     }
     </script>
 </head>
 
 <body>
     <!-- Fixed right-side preview background -->
+    <div class="fixed-preview" aria-hidden="true"></div>
 
     <div class="page-wrap">
+        <div class="page-content">
         <div class="hero-banner">
-            <div class="fixed-preview" aria-hidden="true"></div>
             <div class="profile-image-container">
-                <img src="./img/profile_julian_winking.jpg" height="200px" width=auto alt="Julian Winking"
-                    class="profile-image">
+                <img src="./img/profile_julian_winking.jpg" alt="Julian Winking" class="profile-image">
             </div>
             <div class="hero-content">
                 <h1>Julian Winking</h1>
@@ -70,128 +93,11 @@
             </div>
         </div>
 
-        <section id="selected-projects">
+        <section id="selected-projects" data-nosnippet>
             <h2>Selected Projects</h2>
             <div class="projects-grid">
-                <div class="projects-list">
-                    <a href="https://github.com/julianwinking/visual-odometry-pipeline" target="_blank"
-                        class="project-link">
-                        <div class="project-container with-award">
-                            <div class="badges-container">
-                                <div class="award-badge">Best Project Award</div>
-                                <div class="subject-badge">Computer Vision</div>
-                            </div>
-                            <h3>Visual Odometry Pipeline</h3>
-                            <p>Full monocular visual odometry system featuring sliding-window Bundle Adjustment and Loop
-                                Closure with Pose Graph Optimization. Implements KLT tracking and 5-point/P3P-RANSAC
-                                algorithms for robust trajectory estimation.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">Visual SLAM</span>
-                                <span class="tag">Bundle Adjustment</span>
-                                <span class="tag">Python</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/satellite-docking" target="_blank" class="project-link">
-                        <div class="project-container">
-                            <div class="subject-badge">Non-Convex Optimization</div>
-                            <h3>Satellite Docking</h3>
-                            <p>Autonomous satellite docking using Sequential Convex Programming (SCvx) for trajectory
-                                optimization. Simulates dynamic environments and enforces safety constraints to ensure
-                                precise and collision-free docking maneuvers.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">SCvx</span>
-                                <span class="tag">Trajectory Optimization</span>
-                                <span class="tag">Python</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/multi-agent-goal-collection" target="_blank"
-                        class="project-link">
-                        <div class="project-container">
-                            <div class="subject-badge">Multi-Agent Path Planning</div>
-                            <h3>Multi-Agent Goal Collection</h3>
-                            <p>Hierarchical coordination system for differential-drive fleets solving the Vehicle
-                                Routing Problem. Combines MILP-based task assignment with space-time reservation maps
-                                for collision-free trajectory planning.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">VRP</span>
-                                <span class="tag">Space-Time Planning</span>
-                                <span class="tag">Python</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/bachelor-thesis" target="_blank" class="project-link">
-                        <div class="project-container">
-                            <div class="subject-badge">Bachelor Thesis</div>
-                            <h3>Reducing the Influence of Model Mismatch in Bayesian Optimization Through Targeted Noise
-                                Injection</h3>
-                            <p>Bachelor Thesis at the Institute of Data Science in Mechanical Engineering (RWTH
-                                Aachen).
-                                Addressed model mismatch in Bayesian Optimization by introducing "Targeted Noise
-                                Injection," a data-centric strategy
-                                utilizing a novel multiplicative Gaussian likelihood to selectively down-weight
-                                misleading observations.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">Gaussian Processes</span>
-                                <span class="tag">Bayesian Optimization</span>
-                                <span class="tag">Probabilistic AI</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/dpoc-flappy-bird" target="_blank" class="project-link">
-                        <div class="project-container">
-                            <div class="subject-badge">Optimal Control</div>
-                            <h3>Flappy Bird</h3>
-                            <p>Solving the Flappy Bird game using Dynamic Programming and Optimal Control as a
-                                Stochastic Shortest Path Problem. Models the game dynamics and computes optimal policies
-                                to maximize survival time under uncertainty.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Repository</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">Dynamic Programming</span>
-                                <span class="tag">SSP</span>
-                                <span class="tag">Bellman Equations</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="projects/pid-demo/index.html" target="_blank" class="project-link">
-                        <div class="project-container">
-                            <div class="subject-badge">Control Systems</div>
-                            <h3>PID Controller Simulation Demo</h3>
-                            <p>A browser-based tool for experimenting with PID control, featuring real-time parameter
-                                tuning and visual feedback. Built with JavaScript, HTML, and CSS, it allows users to
-                                adjust P, I, and D gains and observe system stability instantly.</p>
-                            <div class="project-link-indicator">
-                                <span>&rarr;</span>
-                                <span>Open Simulation</span>
-                            </div>
-                            <div class="project-tags">
-                                <span class="tag">JavaScript</span>
-                                <span class="tag">HTML/CSS</span>
-                                <span class="tag">PID Control</span>
-                            </div>
-                        </div>
-                    </a>
-
+                <div class="projects-list-shell">
+                    <div class="projects-list" data-project-section="selected"></div>
                 </div>
                 <aside class="project-preview" aria-label="Project visualization preview">
                     <div class="preview-content" aria-live="polite"></div>
@@ -199,34 +105,13 @@
             </div>
         </section>
 
-        <section id="other-projects">
+        <section id="other-projects" data-nosnippet>
             <h2>Other Projects</h2>
             <div class="projects-grid">
-                <div class="other-projects-grid">
-                    <a href="https://data-science-club.de/gym-tracker/" target="_blank" class="other-project-link">
-                        <div class="other-project-card">
-                            <h3>GymTracker</h3>
-                            <p>Predictive web app forecasting university gym occupancy using real-time data and
-                                time-series analysis.</p>
-                        </div>
-                    </a>
-                    <a href="https://github.com/julianwinking/chrome-banner-injector" target="_blank"
-                        class="other-project-link">
-                        <div class="other-project-card">
-                            <h3>Banner Injector Extension</h3>
-                            <p>Chrome extension to inject custom banners into pages using JavaScript and CSS.</p>
-                        </div>
-                    </a>
-                    <a href="https://rwth-notenstreicher.streamlit.app/" target="_blank" class="other-project-link">
-                        <div class="other-project-card">
-                            <h3>RWTH Notenstreicher</h3>
-                            <p>Streamlit app that analyses transcripts and suggests module exclusions to maximise GPA.
-                            </p>
-                        </div>
-                    </a>
-                </div>
+                <div class="other-projects-grid" data-project-section="other"></div>
             </div>
         </section>
+        </div>
     </div>
 </body>
 

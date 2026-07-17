@@ -132,7 +132,7 @@
   }
 
   function resizeCanvas() {
-    if (!container) return;
+    if (!container || !canvas) return;
     const rect = container.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
     const cssW = Math.max(1, Math.round(rect.width));
@@ -153,8 +153,8 @@
     const H = canvas?.clientHeight || 0;
     if (W === 0 || H === 0) { state.cache = null; return; }
     const spacing = state.spacing;
-    const cols = Math.floor(W / spacing);
-    const rows = Math.floor(H / spacing);
+    const cols = Math.ceil(W / spacing) + 4;
+    const rows = Math.ceil(H / spacing) + 4;
     const count = cols * rows;
   const aPrev = new Float32Array(count);
   const lenPrev = new Float32Array(count);
@@ -164,9 +164,9 @@
     const t0 = state.t; // snapshot time to avoid time-evolving sources during morph
     let idx = 0;
     for (let jy = 0; jy < rows; jy++) {
-      const y = spacing / 2 + jy * spacing;
+      const y = -spacing + jy * spacing;
       for (let ix = 0; ix < cols; ix++) {
-        const x = spacing / 2 + ix * spacing;
+        const x = -spacing + ix * spacing;
         const a0 = prevFn(x, y, t0, W, H);
         aPrev[idx] = a0;
         // Snapshot length factors using current mag field
@@ -199,9 +199,13 @@
     const pTrans = state.transitioning ? Math.max(0, Math.min(1, state.trans)) : 1;
 
     let idx = 0;
-    const usingCache = state.transitioning && state.cache && state.cache.cols === Math.floor(W / spacing) && state.cache.rows === Math.floor(H / spacing);
-    for (let y = spacing / 2; y <= H - spacing / 2; y += spacing) {
-      for (let x = spacing / 2; x <= W - spacing / 2; x += spacing) {
+    const cols = Math.ceil(W / spacing) + 4;
+    const rows = Math.ceil(H / spacing) + 4;
+    const usingCache = state.transitioning && state.cache && state.cache.cols === cols && state.cache.rows === rows;
+    for (let row = 0; row < rows; row++) {
+      const y = -spacing + row * spacing;
+      for (let col = 0; col < cols; col++) {
+        const x = -spacing + col * spacing;
         const ix = Math.round(x / spacing), iy = Math.round(y / spacing);
         const j = jitter(ix, iy);
         const m = magField(x, y, state.t, W, H);
@@ -221,7 +225,7 @@
   ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
         ctx.lineWidth = Math.max(0.8, 1.0 + 1.8 * m + 0.5 * (j - 0.5));
 
-        // Single straight segment anchored at (x,y)
+        // Draw centered segments so clipped canvas edges stay filled.
         let theta;
         if (usingCache) {
           const a1Live = nextFn(x, y, state.t, W, H);
@@ -234,11 +238,11 @@
         } else {
           theta = currFn(x, y, state.t, W, H);
         }
-        const x2 = x + Math.cos(theta) * length;
-        const y2 = y + Math.sin(theta) * length;
+        const dx = Math.cos(theta) * length / 2;
+        const dy = Math.sin(theta) * length / 2;
         ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
+        ctx.moveTo(x - dx, y - dy);
+        ctx.lineTo(x + dx, y + dy);
         ctx.stroke();
         idx++;
       }
@@ -266,11 +270,10 @@
   buildTransitionCache(state.prevPattern, state.targetPattern);
   }
 
-  function init(opts = {}) {
-    const fixedSelector = opts.fixedSelector || '.fixed-preview';
-    const fallbackSelector = opts.fallbackSelector || '.preview-content';
-    container = document.querySelector(fixedSelector) || document.querySelector(fallbackSelector);
-    if (!container) return;
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+  function createCanvas() {
+    if (canvas || !container) return;
     canvas = document.createElement('canvas'); canvas.className = 'preview-canvas';
     container.innerHTML = ''; container.appendChild(canvas);
     ctx = canvas.getContext('2d');
@@ -278,6 +281,22 @@
     state.currentPattern = 'idle'; state.prevPattern = 'idle'; state.targetPattern = 'idle'; state.trans = 1;
     resizeCanvas(); requestAnimationFrame(draw);
     window.addEventListener('resize', resizeCanvas, { passive: true });
+  }
+
+  function init(opts = {}) {
+    const fixedSelector = opts.fixedSelector || '.fixed-preview';
+    const fallbackSelector = opts.fallbackSelector || '.preview-content';
+    container = document.querySelector(fixedSelector) || document.querySelector(fallbackSelector);
+    if (!container) return;
+    // The background animation is desktop-only: on mobile the canvas is never
+    // created (no draw loop, no battery cost). It initializes lazily if the
+    // viewport grows past the breakpoint.
+    if (!mobileQuery.matches) createCanvas();
+    if (typeof mobileQuery.addEventListener === 'function') {
+      mobileQuery.addEventListener('change', (event) => {
+        if (!event.matches) createCanvas();
+      });
+    }
   }
 
   window.FlowFieldPreview = {
