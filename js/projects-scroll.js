@@ -244,30 +244,31 @@ function initProjectScroll() {
     const total = links.length * ACTIVE_SCROLL_DISTANCE;
     const inTimeline = !isMobile && progress >= 0;
 
-    // Activate the card the scroll position asks for — but never skip cards:
-    // a fast fling steps through intermediates one at a time. Desktop maps
-    // scroll bands to cards; mobile picks the card nearest the viewport
-    // center (the band math has no meaning without the pinned timeline).
-    const desiredLink = isMobile
-      ? getMobileActiveLink()
-      : (inTimeline
+    // Desktop: activate the card the scroll position asks for — but never
+    // skip cards: a fast fling steps through intermediates one at a time.
+    // Mobile is tap-driven (accordion): scrolling must never mutate layout,
+    // since iOS Safari has no scroll anchoring and every height change
+    // would jump the page under the user's finger.
+    if (!isMobile) {
+      const desiredLink = inTimeline
         ? links[Math.min(links.length - 1, Math.floor(Math.min(progress, total - 1) / ACTIVE_SCROLL_DISTANCE))]
-        : null);
-    const desiredIndex = desiredLink ? links.indexOf(desiredLink) : -1;
-    const currentIndex = activeEl ? links.indexOf(activeEl) : -1;
+        : null;
+      const desiredIndex = desiredLink ? links.indexOf(desiredLink) : -1;
+      const currentIndex = activeEl ? links.indexOf(activeEl) : -1;
 
-    if (desiredIndex === -1) {
-      setActive(null);
-    } else if (currentIndex === -1) {
-      setActive(links[desiredIndex]);
-      lastSwitchTs = ts;
-    } else if (desiredIndex !== currentIndex) {
-      if (ts - lastSwitchTs >= MIN_SWITCH_INTERVAL_MS) {
-        setActive(links[currentIndex + Math.sign(desiredIndex - currentIndex)]);
+      if (desiredIndex === -1) {
+        setActive(null);
+      } else if (currentIndex === -1) {
+        setActive(links[desiredIndex]);
         lastSwitchTs = ts;
+      } else if (desiredIndex !== currentIndex) {
+        if (ts - lastSwitchTs >= MIN_SWITCH_INTERVAL_MS) {
+          setActive(links[currentIndex + Math.sign(desiredIndex - currentIndex)]);
+          lastSwitchTs = ts;
+        }
+        // Keep the loop alive until activation catches up with the scroll.
+        animateUntil = Math.max(animateUntil, ts + MIN_SWITCH_INTERVAL_MS + 100);
       }
-      // Keep the loop alive until activation catches up with the scroll.
-      animateUntil = Math.max(animateUntil, ts + MIN_SWITCH_INTERVAL_MS + 100);
     }
 
     if (isMobile) {
@@ -312,34 +313,6 @@ function initProjectScroll() {
     if (rafId === null) rafId = requestAnimationFrame(frame);
   }
 
-  // Mobile activation: the card whose center is nearest the viewport center,
-  // with hysteresis so adjacent cards don't flap while scrolling.
-  function getMobileActiveLink() {
-    const viewportCenter = window.innerHeight / 2;
-    // Tight enough that nothing activates on page load while the first card
-    // is only peeking in at the bottom of the viewport.
-    const zone = Math.min(window.innerHeight * 0.25, 260);
-    let best = null;
-    let bestDist = Infinity;
-    for (const link of links) {
-      const card = link.querySelector('.project-container');
-      if (!card) continue;
-      const rect = card.getBoundingClientRect();
-      const dist = Math.abs(rect.top + rect.height / 2 - viewportCenter);
-      if (dist < bestDist) { bestDist = dist; best = link; }
-    }
-    if (!best || bestDist > zone) return null;
-
-    if (activeEl && activeEl !== best) {
-      const activeCard = activeEl.querySelector('.project-container');
-      if (activeCard) {
-        const ar = activeCard.getBoundingClientRect();
-        const activeDist = Math.abs(ar.top + ar.height / 2 - viewportCenter);
-        if (activeDist <= zone && activeDist - bestDist < 40) return activeEl;
-      }
-    }
-    return best;
-  }
 
   function handleResize() {
     timelineStart = null;
@@ -380,14 +353,20 @@ function initProjectScroll() {
 
   links.forEach((link, index) => {
     link.addEventListener('click', (event) => {
-      if (link === activeEl) return; // active card: follow its URL
-
-      event.preventDefault();
       if (mobileQuery.matches) {
-        link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Accordion: tap expands in place, no programmatic scrolling. The
+        // expanded card's tap follows its URL; cards without one collapse.
+        if (link === activeEl) {
+          if (!link.hasAttribute('href')) setActive(null);
+          return;
+        }
+        event.preventDefault();
+        setActive(link);
         return;
       }
 
+      if (link === activeEl) return; // active card: follow its URL
+      event.preventDefault();
       scrollToProject(index);
     });
   });
